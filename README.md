@@ -1,0 +1,2 @@
+# GTNH_DysonSwarm_CalculationTools
+用于计算GTNH戴森球的发电量和所需算力的程序
