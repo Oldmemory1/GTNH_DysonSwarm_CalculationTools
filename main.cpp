@@ -12,7 +12,7 @@ class DysonSwarm{
 	double ComputationNeed;
 	double OutPutEnergy;
 	double DIM;
-	int moduleCount;
+	double moduleCount;
 	public:
 	void SetDataAndInitialization(int ModuleInput,double InputDIM){
 		this->InputModule=ModuleInput;
@@ -30,7 +30,7 @@ class DysonSwarm{
 		/*while(a<0||a>2){
 			a=generateGaussianNoise(1.0,1.0);	
 		}*/
-		this->moduleCount=this->moduleCount-(int)((5e-5)*a*pow((double)this->moduleCount,1.001));
+		this->moduleCount=this->moduleCount-(double)((5e-5)*a*pow((double)this->moduleCount,1.001));
 		if(this->moduleCount<0){
 			this->moduleCount=0;
 		}
@@ -41,7 +41,7 @@ class DysonSwarm{
 	}
 	void CalculateOutPutEnergy(){
 		this->OutPutEnergy=(double)((double)this->moduleCount*(double)262144*(double)DIM);
-		//printf("%lf\n",this->OutPutEnergy);
+		//printf("%.0lf\n",this->OutPutEnergy);
 	}
 	double GetOutPutEnergy(){
 		return this->OutPutEnergy;
@@ -58,7 +58,9 @@ int main(){
 	scanf("%d %lf",&num1,&num2);
 	Dyson.SetDataAndInitialization(num1,num2);
 	double temp=-114514;
-	while(true){
+	double Temp1=-1;
+	double Temp2=-1; 
+	/*while(true){
 		Dyson.GenerateModule();
 		Dyson.CalculateComputation();
 		Dyson.CalculateOutPutEnergy();
@@ -68,18 +70,36 @@ int main(){
 		}else{
 			temp=Dyson.GetOutPutEnergy();
 		}
+	}*/
+	for(int i=1;i>0;i++){
+		Dyson.GenerateModule();
+		Dyson.CalculateComputation();
+		Dyson.CalculateOutPutEnergy();
+		Dyson.DestroyModule();		
+		
+		if(i%2==1){
+			if((fabs)(Dyson.GetOutPutEnergy()-Temp1)<1){
+				break;
+			}
+			Temp1=Dyson.GetOutPutEnergy();
+		}else if(i%2==0){
+			if((fabs)(Dyson.GetOutPutEnergy()-Temp2)<1){
+				break;
+			}
+			Temp2=Dyson.GetOutPutEnergy();
+		}
 	}
 	cout<<"发电量："<<endl; 
-	printf("%lf\n",Dyson.GetOutPutEnergy()); 
+	printf("%.0lf\n",Dyson.GetOutPutEnergy()); 
 	cout<<"所需算力："<<endl; 
-	printf("%lf\n",Dyson.GetNeedComputation());
+	printf("%.0lf\n",Dyson.GetNeedComputation());
 	cout<<"最少需要机箱："<<endl;
 	int temp1=ceil(Dyson.GetNeedComputation()/(double)1154);
 	printf("%d\n",temp1);
 	cout<<"这些机箱的耗电量为："<<endl; 
-	printf("%lf\n",temp1*0.8*524288);
+	printf("%.0lf\n",temp1*0.8*524288);
 	cout<<"净输出为："<<endl;
-	printf("%lf\n",Dyson.GetOutPutEnergy()-temp1*-0.8*524288); 
+	printf("%.0lf\n",Dyson.GetOutPutEnergy()-temp1*-0.8*524288); 
 	system("pause"); 
 	return 0;
 }
